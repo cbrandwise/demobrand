@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Product Landing Page</title>
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+
+        .social-links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .social-card {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s ease-in-out;
+            text-align: center;
+        }
+
+        .social-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-card i {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+       
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            background: url('https://www.ciphercode.co/static/media/2%20(26).5687db3dd0d4d6d95542.png') center/cover no-repeat;
+            color: #333;
+        }
+    
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+    
+        .card {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+    
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+    
+        h2 {
+            text-align: center;
+            color: #3157ef;
+    
+        }
+    
+        .product-details {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+    
+        .product-details ul {
+            width: 48%;
+        }
+    
+        .product-details li {
+            margin-bottom: 15px;
+        }
+    
+        .product-details li strong {
+            color: #333;
+        }
+    
+        .product-details span {
+            color: #666;
+        }
+    
+        .error-message {
+            color: red;
+            text-align: center;
+        }
+       
+    </style>
+    
+
+      
+</head>
+
+<body>
+
+    <h1>Brandwise API Integration</h1>
+
+    
+    <div class="card"  id="authsuccess" style="display: none;">
+        <h2>Product Authentication</h2>
+        <div style="text-align: center;">
+            <img width="50" src="percentage.png">
+		    <p style="color: #2dc76d; margin-top: 15px">Authentic Product</p>
+
+        </div>       
+    </div>
+    <div class="card"  id="authfail" style="display: none;" >
+        <h2>Product Authentication</h2>
+        <div style="text-align: center;">
+            <img width="50" src="error_Auth_Fail.png">
+		    <p>Authentic Failed </p>
+		   
+
+        </div>       
+    </div>
+    <div class="card product-details" style="display: none;" id="product">
+        <h2>Product Details</h2>
+        <ul>
+            <li><strong>Serial Number:</strong> <span id="sr_number"></span></li>
+            <li><strong>GSTIN:</strong> <span id="gstn"></span></li>
+            <li><strong>Manufacturing Unit:</strong> <span id="manufacturing_unit"></span></li>
+            <li><strong>Manufacturing Date:</strong> <span id="manufacturing_date"></span></li>
+            <li><strong>Expiry Date:</strong> <span id="expiry"></span></li>
+            <li><strong>Destination Market:</strong> <span id="destination"></span></li>
+            <li><strong>MRP:</strong> <span id="mrp"></span></li>
+            <li><strong>Batc:</strong> <span id="batch"></span></li>
+        </ul>
+    </div>
+
+    <div class="card" style="display: none;" id="emessage">
+        <p class="error-message"><span id="response"></span></p>
+    </div>
+
+    <div class="card social-card" id="social">
+        <h2>Find Us at</h2>
+        <div class="social-links">
+            <a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.linkedin.com/" target="_blank"> <i class="fab fa-linkedin"></i></a>
+           
+        </div>
+    
+    </div>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the current URL
+            const currentUrl = window.location.href;
+
+            // Create a URLSearchParams object to handle query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Extract query parameters
+            const serial = urlParams.get('serial');
+            const timestamp = urlParams.get('timestamp');
+           
+            const signature = urlParams.get('signature');
+        
+            console.log("Serial:", serial);
+            console.log("timestamp:", timestamp);
+            console.log("Signature:", signature);
+            const apiUrl = "https://demobrand.ciphercode.co/api/v1/authentication/";
+            const xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    const responseData = JSON.parse(xhr.responseText);
+                    console.log("Backend Response:", xhr.status);
+                    const prodInfo = responseData.prod_info;
+        
+                    if (xhr.status === 200) {
+                        // Handle successful response from the backend
+                        console.log("Backend Response:", responseData);
+
+                        document.getElementById('product').style.display = "block";
+                        document.getElementById('authsuccess').style.display = "block";
+                        document.getElementById('sr_number').innerText = prodInfo.sr_number || 'N/A';
+                        document.getElementById('manufacturing_unit').innerText = prodInfo.manufacturing_unit || 'N/A';
+                        document.getElementById('manufacturing_date').innerText = prodInfo.manufacturing_date || 'N/A';
+                        document.getElementById('expiry').innerText = prodInfo.expiry_date || 'N/A';
+                        document.getElementById('destination').innerText = prodInfo.destination_market || 'N/A';
+                        document.getElementById('mrp').innerText = prodInfo.mrp || 'N/A';
+                        document.getElementById('gstn').innerText = prodInfo.gstn || 'N/A';
+                        document.getElementById('batch').innerText = prodInfo.batch || 'N/A';
+                        
+                    } else if (responseData.auth === false) {
+                        document.getElementById('authfail').style.display = "block";
+                    }
+                    else {
+                        // Handle errors from the backend
+                        document.getElementById('emessage').style.display = "block";
+                        document.getElementById('response').innerText = responseData.message
+                        console.log("Error fetching data from backend. Status:",responseData.message)
+                       
+                    }
+                }
+            };
+
+            xhr.open("POST", apiUrl, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // Send the parameters as JSON in the request body
+            const requestBody = JSON.stringify({
+                serial_number: serial,
+                timestamp: timestamp,
+                signature: signature,
+    
+            });
+
+            xhr.send(requestBody);
+        });
+    </script>
+
+
+   
+
+</body>
+
+</html>
