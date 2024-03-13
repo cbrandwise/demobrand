@@ -179,7 +179,7 @@
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     const responseData = JSON.parse(xhr.responseText);
                     console.log("Backend Response:", xhr.status);
-                    const prodInfo = responseData.prod_info;
+                    const prodInfo = responseData.data;
         
                     if (xhr.status === 200) {
                         // Handle successful response from the backend
