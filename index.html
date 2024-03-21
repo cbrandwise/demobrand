@@ -214,13 +214,13 @@
             xhr.open("POST", apiUrl, true);
             xhr.setRequestHeader("Content-Type", "application/json");
 
-            xhr.setRequestHeader("Authorization", "Token" + apikey);
+            xhr.setRequestHeader("Authorization", "Token " + token);
 
             // Send the parameters as JSON in the request body
             const requestBody = JSON.stringify({
                 serial_number: serial,
-                timestamp: timestamp,
-                signature: signature,
+                nonce: timestamp,
+                cipher: signature,
     
             });
 
