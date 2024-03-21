@@ -168,6 +168,7 @@
             const timestamp = urlParams.get('timestamp');
            
             const signature = urlParams.get('signature');
+            const apikey = urlParams.get('key');
         
             console.log("Serial:", serial);
             console.log("timestamp:", timestamp);
@@ -211,6 +212,8 @@
 
             xhr.open("POST", apiUrl, true);
             xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.setRequestHeader("Authorization", "Bearer " + apikey);
 
             // Send the parameters as JSON in the request body
             const requestBody = JSON.stringify({
