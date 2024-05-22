@@ -173,6 +173,7 @@
             if (qr_status){
                 document.getElementById('emessage').style.display = "block";
                 document.getElementById('response').innerText = 'The product has not been activated.'
+                return false;
             }
            
             const token = '41cc2a860d5924d1c5c562e1a8548c814cd952f1'
