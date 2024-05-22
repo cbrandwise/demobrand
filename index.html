@@ -169,6 +169,7 @@
            
             const signature = urlParams.get('signature');
             const qr_status = urlParams.get('status');
+            console.log('qr',qr_status)
             if (qr_status){
                 document.getElementById('emessage').style.display = "block";
                 document.getElementById('response').innerText = 'The product has not been activated.'
