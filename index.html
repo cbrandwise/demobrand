@@ -168,6 +168,11 @@
             const timestamp = urlParams.get('timestamp');
            
             const signature = urlParams.get('signature');
+            const qr_status = urlParams.get('status');
+            if (qr_status){
+                document.getElementById('emessage').style.display = "block";
+                document.getElementById('response').innerText = 'The product has not been activated.'
+            }
            
             const token = '41cc2a860d5924d1c5c562e1a8548c814cd952f1'
             console.log("Serial:", serial);
